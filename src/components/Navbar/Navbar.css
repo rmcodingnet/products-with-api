@@ -1,0 +1,17 @@
+.navbar {
+    display: flex; 
+    flex-direction: row;
+    padding: 20px; 
+    background-color:  #549F93;
+    margin-bottom: 40px;
+    justify-content: center;
+}
+
+.navItem {
+    margin: 0 10px;
+}
+
+.navItem a {
+    color: white;
+    text-decoration: none
+}

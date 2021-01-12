@@ -4,9 +4,16 @@ import ProductList from './components/ProductList/ProductList';
 import UpsertProduct from './components/UpsertProduct/UpsertProduct';
 import Basket from './components/Basket/Basket';
 import Navbar from './components/Navbar/Navbar';
+import { getList } from './api/ProductsAPI';
 
 
 function App() {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+      getList().then(result => setProducts(result))
+  }, [])
+
   return (
     <div className="App">
       <Navbar/>
@@ -29,7 +36,9 @@ function App() {
           exact={true}
           path="/"
           render={(props) => (
-            <ProductList />
+            <ProductList 
+              products={products}
+              {...props}/>
           )}
         />
       </Switch>

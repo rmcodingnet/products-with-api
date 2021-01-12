@@ -23,7 +23,7 @@ const ProductList = ({ products }) => {
 
             <ul>
                 {products.length > 0 && pagination(products, page).map((product, index) => {
-                   return <li key={index}>id:{product.id} name:{product.name} type:{product.type} price:£{product.price} expiry date: {moment(product.expiryDate).format('D/M/YYYY')} description: {product.description} country: {product.country}</li>
+                   return <li key={index}>id:{product.id} name:{product.name} type:{product.type} price:£{product.price} expiry date: {moment(product.expiryDate).format('DD/MM/YYYY')} description: {product.description} country: {product.country}</li>
                 })}
             </ul>
         </div>

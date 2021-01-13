@@ -9,11 +9,22 @@ import { getList, addProduct, updateProduct, deleteProduct } from './api/Product
 
 function App() {
   const [products, setProducts] = useState([]);
+  const [basket, setBasket] = useState([])
 
   useEffect(() => {
       getList().then(result => setProducts(result))
   }, [])
 
+
+  const addToBasket = (product, amount) => {
+    const newBasketItem = {
+      ...product,
+      amount
+    }
+
+    basket.push(newBasketItem);
+    setBasket(basket);
+  }
 
   const addNewProduct = (product) => {
     addProduct(product).then(result =>  {
@@ -59,7 +70,9 @@ function App() {
           exact={true}
           path="/checkout"
           render={(props) => (
-            <Basket />
+            <Basket
+              basket={basket} 
+              {...props}/>
           )}
         />
         <Route
@@ -67,6 +80,7 @@ function App() {
           path="/"
           render={(props) => (
             <ProductList 
+              addItem={addToBasket}
               deleteProduct={deleteExistingProduct}
               products={products}
               {...props}

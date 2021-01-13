@@ -12,5 +12,15 @@ export const addProduct = (product) => {
     }).then(response => response.json());
 }
 
+export const updateProduct = (id, product) => {
+    return fetch(`http://localhost:8000/api/products/${id}`, {
+        method: 'post', 
+        body: JSON.stringify(product),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => response.json());
+}
+
 
 

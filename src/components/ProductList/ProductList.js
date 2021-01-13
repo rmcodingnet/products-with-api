@@ -12,7 +12,7 @@ const pagination = (data, page = 1, pageLimit = 50) => {
 
 
 
-const ProductList = ({ products }) => {
+const ProductList = ({ products, deleteProduct }) => {
     const [page, setPage] = useState(1);
     const [criteria, setCriteria] = useState({ name: "", material: "", expiryDateOne: "", expiryDateTwo: "" });
 
@@ -97,21 +97,22 @@ const ProductList = ({ products }) => {
 
             <div className="pagination">
                 <button onClick={() => page > 1 ? setPage(page - 1) : null}>Previous Page</button>
-                <h4>{page}</h4>
+                <h4>Page {page}</h4>
                 <button onClick={() => setPage(page + 1)}>Next Page</button>
             </div>
 
             <ul>
                 {filteredProducts.length > 0 && pagination(filteredProducts, page).map((product, index) => {
                     return <li key={index}>
-                        id: {product.id} 
-                        name: {product.name} 
-                        type: {product.type} 
-                        price: £{product.price} 
-                        expiry date: {moment(product.expiryDate).format('DD/MM/YYYY')} 
-                        description: {product.description} 
-                        country: {product.country} 
-                        <Link to={`/addProduct/${product.id}`}>Edit Product</Link></li>
+                        id: {product.id + " "} 
+                        name: {product.name + " "} 
+                        type: {product.type + " "} 
+                        price: £{product.price + " "} 
+                        expiry date: {moment(product.expiryDate).format('DD/MM/YYYY') + " "} 
+                        description: {product.description + " "} 
+                        country: {product.country + " "} 
+                        <Link to={`/addProduct/${product.id}`}>Edit Product</Link>
+                        <button onClick={() => deleteProduct(product.id)}>Delete Product</button></li>
                 })}
             </ul>
         </div>

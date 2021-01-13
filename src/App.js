@@ -4,7 +4,7 @@ import ProductList from './components/ProductList/ProductList';
 import UpsertProduct from './components/UpsertProduct/UpsertProduct';
 import Basket from './components/Basket/Basket';
 import Navbar from './components/Navbar/Navbar';
-import { getList, addProduct } from './api/ProductsAPI';
+import { getList, addProduct, updateProduct } from './api/ProductsAPI';
 
 
 function App() {
@@ -17,13 +17,18 @@ function App() {
 
   const addNewProduct = (product) => {
     addProduct(product).then(result =>  {
-      getList().then(result => setProducts(result))
+      getList().then(result => setProducts(result));
       return result.newID ? alert("New Product Added") : alert("Error adding new product");
     });
   }
 
-  const updateProduct = (id, product) => {
-    alert("in updateProduct function");
+  const updateExistingProduct = (id, product) => {
+    console.log(id)
+    console.dir(product)
+    updateProduct(id, product).then(result => {
+      getList().then(result => setProducts(result));
+      return result.hasOwnProperty('name') ? alert("Updated Sucessfully") : alert("Error updating product");
+    });
   }
 
   return (
@@ -36,7 +41,7 @@ function App() {
           render={(props) => (
             <UpsertProduct 
               addProduct={addNewProduct}
-              updateProduct={updateProduct}
+              updateProduct={updateExistingProduct}
               products={products}
               {...props}
             />

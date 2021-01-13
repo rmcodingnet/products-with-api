@@ -26,6 +26,12 @@ function App() {
     setBasket(basket);
   }
 
+  const removeFromBasket = (itemID) => {
+    const itemToRemove = basket.findIndex(item => item.id === itemID)
+    basket.splice(itemToRemove, 1);
+    setBasket(basket)
+  }
+
   const addNewProduct = (product) => {
     addProduct(product).then(result =>  {
       getList().then(result => setProducts(result));
@@ -72,6 +78,7 @@ function App() {
           render={(props) => (
             <Basket
               basket={basket} 
+              removeItem={removeFromBasket}
               {...props}/>
           )}
         />

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -72,7 +72,7 @@ const ProductList = ({ products }) => {
                     }
                 </select>
                 <label>Start Date</label>
-                <DatePicker selected={criteria.expiryDateOne !== "" ? moment(criteria.expiryDateOne).toDate() : moment().toDate()} onChange={date => handleChangeCriteria({ expiryDateOne: date })} />
+                <DatePicker selected={criteria.expiryDateOne !== "" ? moment(criteria.expiryDateOne).toDate() : moment().toDate()} onChange={date => handleChangeCriteria({ expiryDateOne: moment(date).format('YYYY-MM-DDTHH:mm:ss[Z]') })} />
                 <label>End Date</label>
                 <DatePicker selected={criteria.expiryDateTwo !== "" ? moment(criteria.expiryDateTwo).toDate() : moment().toDate()} onChange={date => handleChangeCriteria({ expiryDateTwo: moment(date).format('YYYY-MM-DDTHH:mm:ss[Z]') })} />
 
@@ -103,7 +103,15 @@ const ProductList = ({ products }) => {
 
             <ul>
                 {filteredProducts.length > 0 && pagination(filteredProducts, page).map((product, index) => {
-                    return <li key={index}>id: {product.id} name: {product.name} type: {product.type} price: £{product.price} expiry date: {moment(product.expiryDate).format('DD/MM/YYYY')} description: {product.description} country: {product.country}</li>
+                    return <li key={index}>
+                        id: {product.id} 
+                        name: {product.name} 
+                        type: {product.type} 
+                        price: £{product.price} 
+                        expiry date: {moment(product.expiryDate).format('DD/MM/YYYY')} 
+                        description: {product.description} 
+                        country: {product.country} 
+                        <Link to={`/addProduct/${product.id}`}>Edit Product</Link></li>
                 })}
             </ul>
         </div>

@@ -4,7 +4,7 @@ import ProductList from './components/ProductList/ProductList';
 import UpsertProduct from './components/UpsertProduct/UpsertProduct';
 import Basket from './components/Basket/Basket';
 import Navbar from './components/Navbar/Navbar';
-import { getList } from './api/ProductsAPI';
+import { getList, addProduct } from './api/ProductsAPI';
 
 
 function App() {
@@ -14,15 +14,32 @@ function App() {
       getList().then(result => setProducts(result))
   }, [])
 
+
+  const addNewProduct = (product) => {
+    addProduct(product).then(result =>  {
+      getList().then(result => setProducts(result))
+      return result.newID ? alert("New Product Added") : alert("Error adding new product");
+    });
+  }
+
+  const updateProduct = (id, product) => {
+    alert("in updateProduct function");
+  }
+
   return (
     <div className="App">
       <Navbar/>
       <Switch>
         <Route
           exact={true}
-          path="/addProduct"
+          path="/addProduct/:productID?"
           render={(props) => (
-            <UpsertProduct />
+            <UpsertProduct 
+              addProduct={addNewProduct}
+              updateProduct={updateProduct}
+              products={products}
+              {...props}
+            />
           )}
         />
         <Route
@@ -38,7 +55,8 @@ function App() {
           render={(props) => (
             <ProductList 
               products={products}
-              {...props}/>
+              {...props}
+              />
           )}
         />
       </Switch>

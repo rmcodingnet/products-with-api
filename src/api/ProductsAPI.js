@@ -19,7 +19,13 @@ export const updateProduct = (id, product) => {
         headers: {
             'Content-Type': 'application/json'
         }
-    }).then(response => response.json());
+    }).then(response => response);
+}
+
+export const deleteProduct = (id) => {
+    return fetch(`http://localhost:8000/api/products/${id}`, {
+        method: 'delete'
+    }).then(response => response);
 }
 
 

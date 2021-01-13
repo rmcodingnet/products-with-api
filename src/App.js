@@ -4,7 +4,7 @@ import ProductList from './components/ProductList/ProductList';
 import UpsertProduct from './components/UpsertProduct/UpsertProduct';
 import Basket from './components/Basket/Basket';
 import Navbar from './components/Navbar/Navbar';
-import { getList, addProduct, updateProduct } from './api/ProductsAPI';
+import { getList, addProduct, updateProduct, deleteProduct } from './api/ProductsAPI';
 
 
 function App() {
@@ -27,8 +27,16 @@ function App() {
     console.dir(product)
     updateProduct(id, product).then(result => {
       getList().then(result => setProducts(result));
-      return result.hasOwnProperty('name') ? alert("Updated Sucessfully") : alert("Error updating product");
+      return result.ok ? alert("Product Updated") : alert("An Error Occured");
     });
+  }
+
+  const deleteExistingProduct = (id) => {
+    deleteProduct(id).then(result => {
+      getList().then(result => setProducts(result));
+      console.dir(result)
+      return result.ok ? alert("Product Deleted")  : alert("An Error Occured");
+    })
   }
 
   return (
@@ -59,6 +67,7 @@ function App() {
           path="/"
           render={(props) => (
             <ProductList 
+              deleteProduct={deleteExistingProduct}
               products={products}
               {...props}
               />

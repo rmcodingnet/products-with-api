@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import DatePicker from "react-datepicker";
+import ReactModal from 'react-modal';
 import "react-datepicker/dist/react-datepicker.css";
 
 const pagination = (data, page = 1, pageLimit = 50) => {
@@ -12,9 +13,11 @@ const pagination = (data, page = 1, pageLimit = 50) => {
 
 
 
-const ProductList = ({ products, deleteProduct }) => {
+const ProductList = ({ products, deleteProduct, addItem }) => {
     const [page, setPage] = useState(1);
+    const [showModal, setShowModal] = useState(false);
     const [criteria, setCriteria] = useState({ name: "", material: "", expiryDateOne: "", expiryDateTwo: "" });
+    const [itemToBasket, setItemToBasket] = useState({})
 
 
     let materialList = products.length > 0 ? products.map((product) => product.type) : null;
@@ -27,6 +30,9 @@ const ProductList = ({ products, deleteProduct }) => {
         setCriteria({ ...criteria, ...newCriteria })
     }
 
+    const handleChangeAmount = (newAmount) => {
+        setItemToBasket({...itemToBasket, ...newAmount});
+    }
 
     let showStats = false;
 
@@ -56,6 +62,13 @@ const ProductList = ({ products, deleteProduct }) => {
                 return moment(item.expiryDate).isSame(criteria.expiryDate) || moment(item.expiryDate).isBefore(criteria.expiryDate)
             } else { return true }
         })
+
+
+    const openModal = (product) => {
+        setItemToBasket({ ...product, amount: 1 })
+        setShowModal(true)
+    }
+
     return (
         <div>
             <div className={"filters"} >
@@ -83,15 +96,15 @@ const ProductList = ({ products, deleteProduct }) => {
                     <h1>Statistics</h1>
                     <h2>% Products of each material: </h2>
                     <ul>
-                    {materialList.map((material, index) => {
-                        return <li key={index}>{material}: {((filteredProducts.filter(product => product.type === material).length/filteredProducts.length) * 100).toFixed(2)}</li>
-                    })} 
+                        {materialList.map((material, index) => {
+                            return <li key={index}>{material}: {((filteredProducts.filter(product => product.type === material).length / filteredProducts.length) * 100).toFixed(2)}</li>
+                        })}
                     </ul>
-                    
-                    <br/>
-                    <h2>Total Price : £{filteredProducts.length > 0 ? (filteredProducts.map((product) => parseFloat(product.price)).reduce((a,b) => a + b, 0)).toFixed(2) : "N/A"}</h2>
-                    <br/>
-                    <h2>Average Price : £{filteredProducts.length > 0 ? (filteredProducts.map((product) => parseFloat(product.price)).reduce((a,b) => a + b, 0) / filteredProducts.length).toFixed(2) : "N/A"}</h2>
+
+                    <br />
+                    <h2>Total Price : £{filteredProducts.length > 0 ? (filteredProducts.map((product) => parseFloat(product.price)).reduce((a, b) => a + b, 0)).toFixed(2) : "N/A"}</h2>
+                    <br />
+                    <h2>Average Price : £{filteredProducts.length > 0 ? (filteredProducts.map((product) => parseFloat(product.price)).reduce((a, b) => a + b, 0) / filteredProducts.length).toFixed(2) : "N/A"}</h2>
                 </div>
                 : null}
 
@@ -104,17 +117,35 @@ const ProductList = ({ products, deleteProduct }) => {
             <ul>
                 {filteredProducts.length > 0 && pagination(filteredProducts, page).map((product, index) => {
                     return <li key={index}>
-                        id: {product.id + " "} 
-                        name: {product.name + " "} 
-                        type: {product.type + " "} 
-                        price: £{product.price + " "} 
-                        expiry date: {moment(product.expiryDate).format('DD/MM/YYYY') + " "} 
-                        description: {product.description + " "} 
-                        country: {product.country + " "} 
+                        id: {product.id + " "}
+                        name: {product.name + " "}
+                        type: {product.type + " "}
+                        price: £{product.price + " "}
+                        expiry date: {moment(product.expiryDate).format('DD/MM/YYYY') + " "}
+                        description: {product.description + " "}
+                        country: {product.country + " "}
                         <Link to={`/addProduct/${product.id}`}>Edit Product</Link>
-                        <button onClick={() => deleteProduct(product.id)}>Delete Product</button></li>
+                        <button onClick={() => deleteProduct(product.id)}>Delete Product</button>
+                        <button onClick={() => openModal({ product })}>Add to Basket</button></li>
                 })}
             </ul>
+
+            <ReactModal
+                isOpen={showModal}
+                contentLabel="Add items modal"
+                onAfterClose={ () => addItem(itemToBasket.product, itemToBasket.amount)}
+            >
+                {Object.keys(itemToBasket).length > 0 ? <>
+                <h2>Enter amount</h2>
+                <br/>
+                <label>{itemToBasket.product.name}</label>
+                <input type="number" value={itemToBasket.amount} onChange={(e) => handleChangeAmount({amount: e.target.value})}/>
+                <br/>
+                <button onClick={() =>(setShowModal(false))}>Close Window</button> </> : null}
+                
+            </ReactModal>
+
+
         </div>
 
     );

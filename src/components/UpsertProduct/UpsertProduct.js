@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { withRouter, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import './UpsertProduct.css'
 
 const UpsertProduct = ({addProduct, updateProduct, history, products}) => {
     const [values, setValues] = useState({});

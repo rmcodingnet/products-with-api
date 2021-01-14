@@ -4,6 +4,7 @@ import moment from 'moment';
 import DatePicker from "react-datepicker";
 import ReactModal from 'react-modal';
 import "react-datepicker/dist/react-datepicker.css";
+import './ProductList.css'
 
 const pagination = (data, page = 1, pageLimit = 50) => {
     let result = data.slice((page - 1) * pageLimit, page * pageLimit);

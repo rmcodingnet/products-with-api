@@ -60,7 +60,7 @@ const Basket = ({ basket, removeItem }) => {
             {basketItems.length > 0 ? <>
             <ul>
                 {basketItems.length > 0 ? basketItems.map((item) => {
-                    return <li key={item.amount}>{item.name + " £" + item.price }<input type="number" value={item.amount} onChange={(e) => handleChangeAmount(item.id,{ amount: parseInt(e.target.value) })} />{" "}<button onClick={() => removeFromBasketItems(item.id)}>Remove from basket</button></li>
+                    return <li key={item.id}>{item.name + " £" + item.price }<input type="number" value={item.amount} onChange={(e) => handleChangeAmount(item.id,{ amount: parseInt(e.target.value) })} />{" "}<button onClick={() => removeFromBasketItems(item.id)}>Remove from basket</button></li>
                 }) : null}
             </ul>
             <br/>

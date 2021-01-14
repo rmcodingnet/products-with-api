@@ -12,7 +12,7 @@ const Basket = ({ basket, removeItem }) => {
     useEffect(() => {
         if(localStorage.getItem('basket') && basketItems.length < 1) {
             setBasketItems(JSON.parse(localStorage.getItem('basket')));
-        } else if(basket.length > 1 ){
+        } else if(basket.length >= 1 ){
             setBasketItems(basket)
             if(basketItems.length > 0) {
                 localStorage.setItem('basket', JSON.stringify(basketItems));
@@ -60,7 +60,7 @@ const Basket = ({ basket, removeItem }) => {
             {basketItems.length > 0 ? <>
             <ul>
                 {basketItems.length > 0 ? basketItems.map((item) => {
-                    return <li key={item.id}>{item.name + " £" + item.price }<input type="number" value={item.amount} onChange={(e) => handleChangeAmount(item.id,{ amount: parseInt(e.target.value) })} />{" "}<button onClick={() => removeFromBasketItems(item.id)}>Remove from basket</button></li>
+                    return <li key={item.amount}>{item.name + " £" + item.price }<input type="number" value={item.amount} onChange={(e) => handleChangeAmount(item.id,{ amount: parseInt(e.target.value) })} />{" "}<button onClick={() => removeFromBasketItems(item.id)}>Remove from basket</button></li>
                 }) : null}
             </ul>
             <br/>

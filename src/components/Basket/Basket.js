@@ -10,7 +10,17 @@ const Basket = ({ basket, removeItem }) => {
     let totalAmount = null;
 
     useEffect(() => {
-        setBasketItems(basket)
+        if(localStorage.getItem('basket') && basketItems.length < 1) {
+            setBasketItems(JSON.parse(localStorage.getItem('basket')))
+        } else {
+            setBasketItems(basket)
+            if(basketItems.length > 0) {
+                localStorage.setItem('basket', JSON.stringify(basketItems));
+            }
+            
+        }
+        
+
         setTotalPrice( basketItems.length > 0 ? basketItems.map((item) => parseFloat(item.price * item.amount)).reduce((a,b) => a + b, 0).toFixed(2) : null)
         
     }, [basket, basketItems])
@@ -19,6 +29,7 @@ const Basket = ({ basket, removeItem }) => {
         const itemToUpdate = basketItems.findIndex(item => item.id === id)
         basketItems.splice(itemToUpdate, 1, {...basketItems[itemToUpdate], ...newAmount})
         setBasketItems(basketItems);
+        localStorage.setItem('basket', JSON.stringify(basketItems))
         console.log(basketItems)
     }
 
@@ -27,6 +38,7 @@ const Basket = ({ basket, removeItem }) => {
         console.log(itemToRemove)
         basketItems.splice(itemToRemove, 1);
         setBasketItems(basketItems);
+        localStorage.setItem('basket', JSON.stringify(basketItems))
         console.log(basketItems);
         removeItem(id)
     }

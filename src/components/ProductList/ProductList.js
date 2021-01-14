@@ -131,6 +131,7 @@ const ProductList = ({ products, deleteProduct, addItem }) => {
             </ul>
 
             <ReactModal
+                ariaHideApp={false}
                 isOpen={showModal}
                 contentLabel="Add items modal"
                 onAfterClose={ () => addItem(itemToBasket.product, itemToBasket.amount)}

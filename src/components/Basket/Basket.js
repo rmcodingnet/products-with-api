@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState} from 'react';
 
 const Basket = ({ basket, removeItem }) => {
     const [basketItems, setBasketItems] = useState([])
@@ -11,18 +11,14 @@ const Basket = ({ basket, removeItem }) => {
 
     useEffect(() => {
         if(localStorage.getItem('basket') && basketItems.length < 1) {
-            setBasketItems(JSON.parse(localStorage.getItem('basket')))
-        } else {
+            setBasketItems(JSON.parse(localStorage.getItem('basket')));
+        } else if(basket.length > 1 ){
             setBasketItems(basket)
             if(basketItems.length > 0) {
                 localStorage.setItem('basket', JSON.stringify(basketItems));
             }
-            
-        }
-        
-
+        }            
         setTotalPrice( basketItems.length > 0 ? basketItems.map((item) => parseFloat(item.price * item.amount)).reduce((a,b) => a + b, 0).toFixed(2) : null)
-        
     }, [basket, basketItems])
 
     const handleChangeAmount = (id,newAmount) => {

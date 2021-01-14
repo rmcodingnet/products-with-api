@@ -12,7 +12,7 @@ const Basket = ({ basket, removeItem }) => {
     useEffect(() => {
         if(localStorage.getItem('basket') && basketItems.length < 1) {
             setBasketItems(JSON.parse(localStorage.getItem('basket')));
-        } else if(basket.length >= 1 ){
+        } else if(basket.length >= 1 && basketItems.length < 1 ){
             setBasketItems(basket)
             if(basketItems.length > 0) {
                 localStorage.setItem('basket', JSON.stringify(basketItems));

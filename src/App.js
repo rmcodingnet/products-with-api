@@ -39,8 +39,14 @@ function App() {
 
   const removeFromBasket = (itemID) => {
     const itemToRemove = basket.findIndex(item => item.id === itemID)
-    basket.splice(itemToRemove, 1);
-    setBasket(basket)
+    console.log(itemToRemove)
+    setBasket(basket.filter((item) => {
+       return item.id !== itemID
+    }));
+    //basketItems.splice(itemToRemove, 1);
+    
+    ////localStorage.setItem('basket', JSON.stringify(basketItems))
+    // console.log(basketItems);
   }
 
   const addNewProduct = (product) => {

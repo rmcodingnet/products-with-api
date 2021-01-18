@@ -1,6 +1,6 @@
 import React, { useEffect, useState} from 'react';
 
-const Basket = ({ basket, removeItem }) => {
+const Basket = ({ basket, removeItem, updateItem }) => {
     const [basketItems, setBasketItems] = useState([])
     const [code, setCode] = useState("");
     const [totalPrice, setTotalPrice] = useState(0);
@@ -21,21 +21,45 @@ const Basket = ({ basket, removeItem }) => {
         setTotalPrice( basketItems.length > 0 ? basketItems.map((item) => parseFloat(item.price * item.amount)).reduce((a,b) => a + b, 0).toFixed(2) : null)
     }, [basket, basketItems])
 
-    const handleChangeAmount = (id,newAmount) => {
+    // const handleChangeAmount = (id,newAmount) => {
+    //     const itemToUpdate = basketItems.findIndex(item => item.id === id)
+    //     basketItems.splice(itemToUpdate, 1, {...basketItems[itemToUpdate], ...newAmount})
+    //     setBasketItems(basketItems);
+    //     localStorage.setItem('basket', JSON.stringify(basketItems))
+    //     console.log(basketItems)
+    // }
+
+    const handleChangeAmount = (id, newAmount) => {
         const itemToUpdate = basketItems.findIndex(item => item.id === id)
-        basketItems.splice(itemToUpdate, 1, {...basketItems[itemToUpdate], ...newAmount})
-        setBasketItems(basketItems);
-        localStorage.setItem('basket', JSON.stringify(basketItems))
-        console.log(basketItems)
+ 
+        console.log(itemToUpdate, "current index")
+        setBasketItems((prevState) =>
+            prevState.map((actualProduct, i) => {
+                if (i === itemToUpdate) {
+                    return { ...actualProduct, "amount": newAmount.amount };
+                }
+                return actualProduct;
+            })
+        );
+        
+        updateItem(id, newAmount);
+
+        // basketItems.splice(itemToUpdate, 1, { ...basketItems[itemToUpdate], ...newAmount })
+        // setBasketItems(basketItems);
+        // localStorage.setItem('basket', JSON.stringify(basketItems))
+        // console.log(basketItems)
     }
 
     const removeFromBasketItems = (id) => {
         const itemToRemove = basketItems.findIndex(item => item.id === id)
         console.log(itemToRemove)
-        basketItems.splice(itemToRemove, 1);
-        setBasketItems(basketItems);
-        localStorage.setItem('basket', JSON.stringify(basketItems))
-        console.log(basketItems);
+        setBasketItems(basketItems.filter((item) => {
+           return item.id !== id
+        }));
+        //basketItems.splice(itemToRemove, 1);
+        
+        ////localStorage.setItem('basket', JSON.stringify(basketItems))
+        // console.log(basketItems);
         removeItem(id)
     }
     

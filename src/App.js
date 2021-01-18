@@ -26,6 +26,17 @@ function App() {
     setBasket(basket);
   }
 
+  const updateBasket = (itemID, newAmount) => {
+    const itemToUpdate = basket.findIndex(item => item.id === itemID);
+    setBasket((prevState) => 
+      prevState.map((actualProduct, i) => {
+        if (i === itemToUpdate) {
+          return { ...actualProduct, "amount": newAmount.amount}
+        }
+        return actualProduct
+      }))
+  }
+
   const removeFromBasket = (itemID) => {
     const itemToRemove = basket.findIndex(item => item.id === itemID)
     basket.splice(itemToRemove, 1);
@@ -78,6 +89,7 @@ function App() {
           render={(props) => (
             <Basket
               basket={basket} 
+              updateItem={updateBasket}
               removeItem={removeFromBasket}
               {...props}/>
           )}

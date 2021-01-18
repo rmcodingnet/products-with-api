@@ -13,7 +13,14 @@ function App() {
 
   useEffect(() => {
       getList().then(result => setProducts(result))
-  }, [])
+      if(basket.length < 1 && localStorage.getItem('basket')) {
+        if(JSON.parse(localStorage.getItem('basket')).length > 1 ){
+          setBasket(JSON.parse(localStorage.getItem('basket')));
+        }
+      } else if (basket.length > 1){
+        localStorage.setItem('basket', JSON.stringify(basket))
+      }
+  }, [basket])
 
 
   const addToBasket = (product, amount) => {
@@ -24,6 +31,7 @@ function App() {
 
     basket.push(newBasketItem);
     setBasket(basket);
+    localStorage.setItem('basket', JSON.stringify(basket));
   }
 
   const updateBasket = (itemID, newAmount) => {
@@ -35,6 +43,7 @@ function App() {
         }
         return actualProduct
       }))
+    localStorage.setItem('basket', JSON.stringify(basket));
   }
 
   const removeFromBasket = (itemID) => {
@@ -47,6 +56,7 @@ function App() {
     
     ////localStorage.setItem('basket', JSON.stringify(basketItems))
     // console.log(basketItems);
+    localStorage.removeItem('basket')
   }
 
   const addNewProduct = (product) => {

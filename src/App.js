@@ -17,7 +17,7 @@ function App() {
         if(JSON.parse(localStorage.getItem('basket')).length > 1 ){
           setBasket(JSON.parse(localStorage.getItem('basket')));
         }
-      } else if (basket.length > 1){
+      } else if (basket.length >= 1){
         localStorage.setItem('basket', JSON.stringify(basket))
       }
   }, [basket])

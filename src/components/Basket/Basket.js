@@ -1,7 +1,7 @@
 import React, { useEffect, useState} from 'react';
 
 const Basket = ({ basket, removeItem, updateItem }) => {
-    const [basketItems, setBasketItems] = useState([])
+    //const [basketItems, setBasketItems] = useState([])
     const [code, setCode] = useState("");
     const [totalPrice, setTotalPrice] = useState(0);
 
@@ -10,16 +10,16 @@ const Basket = ({ basket, removeItem, updateItem }) => {
     let totalAmount = null;
 
     useEffect(() => {
-        if(localStorage.getItem('basket') && basketItems.length < 1) {
-            setBasketItems(JSON.parse(localStorage.getItem('basket')));
-        } else if(basket.length >= 1 && basketItems.length < 1 ){
-            setBasketItems(basket)
-            if(basketItems.length > 0) {
-                localStorage.setItem('basket', JSON.stringify(basketItems));
-            }
-        }            
-        setTotalPrice( basketItems.length > 0 ? basketItems.map((item) => parseFloat(item.price * item.amount)).reduce((a,b) => a + b, 0).toFixed(2) : null)
-    }, [basket, basketItems])
+        // if(localStorage.getItem('basket') && basketItems.length < 1) {
+        //     setBasketItems(JSON.parse(localStorage.getItem('basket')));
+        // } else if(basket.length >= 1 && basketItems.length < 1 ){
+        //     setBasketItems(basket)
+        //     if(basketItems.length > 0) {
+        //         localStorage.setItem('basket', JSON.stringify(basketItems));
+        //     }
+        // }            
+        setTotalPrice( basket.length > 0 ? basket.map((item) => parseFloat(item.price * item.amount)).reduce((a,b) => a + b, 0).toFixed(2) : null)
+    }, [basket])
 
     // const handleChangeAmount = (id,newAmount) => {
     //     const itemToUpdate = basketItems.findIndex(item => item.id === id)
@@ -30,17 +30,17 @@ const Basket = ({ basket, removeItem, updateItem }) => {
     // }
 
     const handleChangeAmount = (id, newAmount) => {
-        const itemToUpdate = basketItems.findIndex(item => item.id === id)
+        // const itemToUpdate = basketItems.findIndex(item => item.id === id)
  
-        console.log(itemToUpdate, "current index")
-        setBasketItems((prevState) =>
-            prevState.map((actualProduct, i) => {
-                if (i === itemToUpdate) {
-                    return { ...actualProduct, "amount": newAmount.amount };
-                }
-                return actualProduct;
-            })
-        );
+        // console.log(itemToUpdate, "current index")
+        // setBasketItems((prevState) =>
+        //     prevState.map((actualProduct, i) => {
+        //         if (i === itemToUpdate) {
+        //             return { ...actualProduct, "amount": newAmount.amount };
+        //         }
+        //         return actualProduct;
+        //     })
+        // );
         
         updateItem(id, newAmount);
 
@@ -51,11 +51,11 @@ const Basket = ({ basket, removeItem, updateItem }) => {
     }
 
     const removeFromBasketItems = (id) => {
-        const itemToRemove = basketItems.findIndex(item => item.id === id)
-        console.log(itemToRemove)
-        setBasketItems(basketItems.filter((item) => {
-           return item.id !== id
-        }));
+        // const itemToRemove = basketItems.findIndex(item => item.id === id)
+        // console.log(itemToRemove)
+        // setBasketItems(basketItems.filter((item) => {
+        //    return item.id !== id
+        // }));
         //basketItems.splice(itemToRemove, 1);
         
         ////localStorage.setItem('basket', JSON.stringify(basketItems))
@@ -81,9 +81,9 @@ const Basket = ({ basket, removeItem, updateItem }) => {
     return (
 
         <div>
-            {basketItems.length > 0 ? <>
+            {basket.length > 0 ? <>
             <ul>
-                {basketItems.length > 0 ? basketItems.map((item) => {
+                {basket.length > 0 ? basket.map((item) => {
                     return <li key={item.id}>{item.name + " £" + item.price }<input type="number" value={item.amount} onChange={(e) => handleChangeAmount(item.id,{ amount: parseInt(e.target.value) })} />{" "}<button onClick={() => removeFromBasketItems(item.id)}>Remove from basket</button></li>
                 }) : null}
             </ul>

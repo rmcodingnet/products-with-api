@@ -77,7 +77,7 @@ const UpsertProduct = ({ products, refresh }) => {
                 <input required type="text" value={values.name || ""} onChange={(e) => handleChangeValues({ name: e.target.value })} />
                 <br />
                 <label>Material</label>
-                <input required type="text" value={values.type || ""} onChange={(e) => handleChangeValues({ type: e.target.value })} />
+                <input required type="text" value={values.type || ""} onChange={(e) => handleChangeValues({ type: e.target.value })} pattern="[A-Za-z]"  title="Must be letters only"/>
                 <br />
                 <label>Price (£)</label>
                 <input required type="number" value={values.price || ""} onChange={(e) => handleChangeValues({ price: e.target.value })} />
@@ -87,7 +87,7 @@ const UpsertProduct = ({ products, refresh }) => {
                 {/* <DatePicker selected={values.expiryDate !== "" ? moment(values.expiryDate).toDate() : moment().toDate()} onChange={date => handleChangeValues({ expiryDate: moment(date).format('YYYY-MM-DDTHH:mm:ss[Z]') })} /> */}
                 <br />
                 <label>Description</label>
-                <textarea required type="text" value={values.description || ""} onChange={(e) => handleChangeValues({ description: e.target.value })} />
+                <textarea required type="text" value={values.description || ""} onChange={(e) => handleChangeValues({ description: e.target.value })}/>
                 <br />
                 <label>Country</label>
                 <input required type="text" value={values.country || ""} onChange={(e) => handleChangeValues({ country: e.target.value })}></input>

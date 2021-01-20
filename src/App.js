@@ -4,7 +4,7 @@ import ProductList from './components/ProductList/ProductList';
 import UpsertProduct from './components/UpsertProduct/UpsertProduct';
 import Basket from './components/Basket/Basket';
 import Navbar from './components/Navbar/Navbar';
-import { getList, addProduct, updateProduct, deleteProduct } from './api/ProductsAPI';
+import { getList, deleteProduct } from './api/ProductsAPI';
 
 
 function App() {
@@ -22,6 +22,9 @@ function App() {
       }
   }, [basket])
 
+  const refreshProductList = () => {
+    getList().then(result => setProducts(result))
+  }
 
   const addToBasket = (product, amount) => {
     const newBasketItem = {
@@ -59,21 +62,21 @@ function App() {
     localStorage.removeItem('basket')
   }
 
-  const addNewProduct = (product) => {
-    addProduct(product).then(result =>  {
-      getList().then(result => setProducts(result));
-      return result.newID ? alert("New Product Added") : alert("Error adding new product");
-    });
-  }
+  // const addNewProduct = (product) => {
+  //   addProduct(product).then(result =>  {
+  //     getList().then(result => setProducts(result));
+  //     return result.newID ? alert("New Product Added") : alert("Error adding new product");
+  //   });
+  // }
 
-  const updateExistingProduct = (id, product) => {
-    console.log(id)
-    console.dir(product)
-    updateProduct(id, product).then(result => {
-      getList().then(result => setProducts(result));
-      return result.ok ? alert("Product Updated") : alert("An Error Occured");
-    });
-  }
+  // const updateExistingProduct = (id, product) => {
+  //   console.log(id)
+  //   console.dir(product)
+  //   updateProduct(id, product).then(result => {
+  //     getList().then(result => setProducts(result));
+  //     return result.ok ? alert("Product Updated") : alert("An Error Occured");
+  //   });
+  // }
 
   const deleteExistingProduct = (id) => {
     deleteProduct(id).then(result => {
@@ -92,8 +95,7 @@ function App() {
           path="/addProduct/:productID?"
           render={(props) => (
             <UpsertProduct 
-              addProduct={addNewProduct}
-              updateProduct={updateExistingProduct}
+              refresh={refreshProductList}
               products={products}
               {...props}
             />
